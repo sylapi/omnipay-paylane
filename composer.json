@@ -1,0 +1,43 @@
+{
+	"name": "omnipay/paylane",
+	"type": "library",
+	"description": "Paylane gateway for Omnipay payment processing library",
+	"keywords": [
+		"gateway",
+		"merchant",
+		"omnipay",
+		"pay",
+		"payment",
+		"paylane",
+		"purchase"
+	],
+	"homepage": "https://bitbucket.org/sylapi/omnipay-paylane",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Adrian Zapotoczny"
+		}
+	],
+	"autoload": {
+		"psr-4": { "Omnipay\\Paylane\\" : "src/" }
+	},
+	"require": {
+		"omnipay/common": "^3"
+	},
+	"require-dev": {
+		"omnipay/tests": "^3"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "3.0.x-dev"
+		}
+	},
+	"prefer-stable": false,
+	"repositories": [
+		{
+			"url": "git@bitbucket.org:sylapi/omnipay-paylane.git",
+			"type": "git",
+			"reference":"dev-master"
+		}
+	]
+}
