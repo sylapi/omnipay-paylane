@@ -15,6 +15,6 @@ Www-Authenticate: Basic realm="Paylane API Key"
     "success":false,
     "error":{
         "error_number":720,
-        "error_description":"Unable to verify enrollment for 3-D Secure. You can perform a normal payment without 3-D Secure or decline the transaction."
+        "error_description":"Unable to verify"
     }
 }

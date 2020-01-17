@@ -32,8 +32,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     public function __construct(RequestInterface $request, $data, $headers = [])
     {
-        print_r($data);
-        echo 'd';
         $this->request = $request;
         $this->data = $data;
         $this->headers = $headers;

@@ -64,6 +64,17 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame(10, $request->getCard()->getExpiryMonth());
     }
 
+    public function testPurchaseSuccess()
+    {
+        $this->setMockHttpResponse('PurchaseSuccess.txt');
+
+        $response = $this->gateway->purchase($this->options)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($response->isRedirect());
+        $this->assertNull($response->getMessage());
+    }
+    
     public function testPurchaseFailure()
     {
         $this->setMockHttpResponse('PurchaseFailure.txt');
