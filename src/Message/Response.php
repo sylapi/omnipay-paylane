@@ -105,6 +105,18 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return null;
     }
 
+    public function getTransactionReference()
+    {
+        if (isset($this->data['id_3dsecure_auth'])) {
+            return $this->data['id_3dsecure_auth'];
+        }
+        else if (isset($this->data['id_sale'])) {
+            return $this->data['id_sale'];
+        }
+
+        return null;
+    }
+
 
     public function getRedirectMethod()
     {

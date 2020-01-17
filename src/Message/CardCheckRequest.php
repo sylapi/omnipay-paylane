@@ -17,6 +17,6 @@ class CardCheckRequest extends AbstractRequest
 
         $this->setRequestMethod('GET');
 
-        return $this->getReturnUrl().'/cards/check';
+        return $this->getEndpointUrl().'/cards/check';
     }
 }

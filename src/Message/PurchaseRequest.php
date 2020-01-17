@@ -5,13 +5,18 @@
  */
 namespace Omnipay\Paylane\Message;
 
-
 class PurchaseRequest extends AbstractRequest
 {
     public function getData()
     {
         $this->validate('amount');
+
         $card_data = $this->getCard();
+        $card_data->validate();
+
+        if (!$card_data->getFirstName()) {
+            $card_data->setFirstName('Firstname');
+        }
 
         $data = [];
 

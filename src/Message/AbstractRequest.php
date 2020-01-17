@@ -194,9 +194,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             array('Authorization' => 'Basic ' . base64_encode($this->getApiKey() . ':' . $this->getApiPassword()))
         );
 
+
         $httpResponse = $this->httpClient->request($this->getRequestMethod(), $this->getEndpoint(), $headers, json_encode($data));
         $responseBody = json_decode($httpResponse->getBody()->getContents(), true);
-
 
         if (isset($responseBody['error']['error_number']) && $responseBody['error']['error_number'] == 720) {
 
