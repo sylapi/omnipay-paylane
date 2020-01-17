@@ -14,7 +14,7 @@ Www-Authenticate: Basic realm="Paylane API Key"
 {
     "success":false,
     "error":{
-        "error_number":720,
-        "error_description":"Unable to verify"
+        "error_number":"719",
+        "error_description":"Card issue number is not valid."
     }
 }

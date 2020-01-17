@@ -13,6 +13,6 @@ X-Whom: dc1-web-2
 
 {
     "success":true,
-    "id_sale":123456789,
+    "id_sale":"123456789",
     "id_account":12345
 }

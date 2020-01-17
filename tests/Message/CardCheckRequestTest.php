@@ -1,38 +1,24 @@
 <?php
 namespace Omnipay\Paylane\Message;
 
+use Omnipay\Common\CreditCard;
 use Omnipay\Tests\TestCase;
 
 class CardCheckRequestTest extends TestCase
 {
     protected $request;
 
-    public function setUp()
-    {
-        $this->request = new PurchaseRequest($this->getHttpClient(), $this->getHttpRequest());
-        $this->request->initialize(array(
-            'apiKey'        => 'mykey',
-            'apiPassword'   => 'mypassword',
-            'ip'            => '127.0.0.1',
-            'language'      => 'pl',
-            'amount'        => '12.00',
-        ));
-    }
-
     public function testGetData()
     {
+        $card = new CreditCard($this->getValidCard());
+
+        $this->request = new CardCheckRequest($this->getHttpClient(), $this->getHttpRequest());
         $this->request->initialize(array(
-            'apiKey'        => 'mykey',
-            'apiPassword'   => 'mypassword',
-            'ip'            => '127.0.0.1',
-            'language'      => 'pl',
-            'amount'        => '12.00',
+            'card'          => $card
         ));
 
         $data = $this->request->getData();
 
-        $this->assertSame("12.00", $data['amount']);
-        $this->assertSame('pl', $data['language']);
-        $this->assertSame('127.0.0.1', $data['ip']);
+        $this->assertSame($card->getNumber(), $data['card_number']);
     }
 }

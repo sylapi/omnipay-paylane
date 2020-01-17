@@ -13,7 +13,7 @@ X-Whom: dc1-web-2
 
 {
     "success":true,
-    "id_3dsecure_auth":123456,
+    "id_3dsecure_auth":"123456",
     "is_card_enrolled":true,
     "redirect_url":"https:\/\/secure.paylane.com\/order\/direct.html,111111,abcd1234"
 }

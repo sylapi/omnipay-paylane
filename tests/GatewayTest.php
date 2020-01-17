@@ -43,25 +43,28 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame('12345678900', $request->getCard()->getNumber());
     }
 
-    public function testPurchase()
-    {
-        $options = array(
-            'amount' => '10.00',
-            'card' => [
-                'number' => '1234567890',
-                'cvv' => '123',
-                'expiryMonth' => '10'
-            ],
-            'ReturnUrl' => 'http://test.com/getReturnUrl'
-        );
-        $request= $this->gateway->purchase($options);
+    public function authorizeSuccess() {
 
-        $this->assertInstanceOf('\Omnipay\Paylane\Message\PurchaseRequest', $request);
-        $this->assertSame('10.00', $request->getAmount());
-        $this->assertSame('http://test.com/getReturnUrl', $request->getReturnUrl());
-        $this->assertSame('1234567890', $request->getCard()->getNumber());
-        $this->assertSame('123', $request->getCard()->getCvv());
-        $this->assertSame(10, $request->getCard()->getExpiryMonth());
+        $this->setMockHttpResponse('AuthorizeSuccess.txt');
+
+        $response = $this->gateway->authorize($this->options)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('VISA', $response->getData()['card_type']);
+    }
+
+    public function authorizeFailure() {
+
+        $this->setMockHttpResponse('AutorizeFailure.txt');
+
+        $response = $this->gateway->authorize($this->options)->send();
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNotNull($response->getMessage());
+        $this->assertSame('411', $response->getCode());
     }
 
     public function testPurchaseSuccess()
@@ -74,7 +77,8 @@ class GatewayTest extends GatewayTestCase
         $this->assertTrue($response->isRedirect());
         $this->assertNull($response->getMessage());
     }
-    
+
+
     public function testPurchaseFailure()
     {
         $this->setMockHttpResponse('PurchaseFailure.txt');
@@ -83,6 +87,31 @@ class GatewayTest extends GatewayTestCase
 
         $this->assertFalse($response->isSuccessful());
         $this->assertNotNull($response->getMessage());
+    }
+
+
+    public function testCompletePurchaseSuccess()
+    {
+        $this->setMockHttpResponse('CompletePurchaseSuccess.txt');
+
+        $response = $this->gateway->completePurchase($this->options)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('123456789', $response->getTransactionReference());
+    }
+
+
+    public function testCompletePurchaseFailure()
+    {
+        $this->setMockHttpResponse('CompletePurchaseFailure.txt');
+
+        $response = $this->gateway->completePurchase($this->options)->send();
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertNotNull($response->getMessage());
+        $this->assertSame('723', $response->getCode());
     }
 
 
