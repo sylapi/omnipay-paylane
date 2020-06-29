@@ -23,6 +23,77 @@ And run composer to update your dependencies:
     $ curl -s http://getcomposer.org/installer | php
     $ php composer.phar update
 
+### Basic purchase example
+
+```php
+$gateway = Omnipay\Omnipay::create('Paylane');
+$gateway->setApiKey('--API Login--');
+$gateway->setApiPassword('--API Password--');
+$gateway->setIp('--IP--');
+
+$response = $gateway->purchase(
+    [
+        "amount" => "100.00",
+        "currency" => "PLN",
+        "description" => "My Payment",
+        "transactionId" => "12345",
+        "email" => "name@example.com",
+        "name" => "Fisrtname Lastname",
+        "payMethod" => "m",
+        "items" => [
+            [
+                "name" => "Product name",
+                "price" => "100.00",
+                "quantity" => 1
+            ]
+        ],
+         "card" => [
+            "firstName" => "Fisrtname",
+            "lastName" => "Lastname",
+            "number" => "4111111111111111",
+            "cvv" => "123",
+            "expiryMonth" => "12",
+            "expiryYear" => "2025",
+            "email" => "name@example.com"
+        ],
+        "returnUrl" => "https://example.org/paylane-success.php",
+        "cancelUrl" => "https://example.org/paylane-error.php",
+        "notifyUrl" => "https://example.org/paylane-callback.php",
+    ]
+)->send();
+
+// Process response
+if ($response->isSuccessful()) {
+
+    $result = $response->getData();
+    
+    if ($response->isRedirect()) {
+        $response->redirect();
+    }
+} 
+else {
+
+    // Payment failed
+    echo $response->getMessage();
+    echo $response->getCode();
+}
+```
+
+### Basic purchase success example
+```php
+$response = $gateway->completePurchase($_POST);
+
+if ($response->isSuccessful()) {
+
+    $message = $response->getMessage();
+    $status = $response->getStatus();
+}
+else {
+    $error = $response->getMessage();
+    $code = $response->getCode();
+}
+```
+
 ## Basic Usage
 
 The following gateways are provided by this package:

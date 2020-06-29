@@ -1,12 +1,18 @@
 <?php
 
-/**
- * Paylane Purchase Request.
- */
 namespace Omnipay\Paylane\Message;
 
+/**
+ * Class PurchaseRequest
+ * @package Omnipay\Paylane\Message
+ */
 class PurchaseRequest extends AbstractRequest
 {
+    /**
+     * @return array|mixed
+     * @throws \Omnipay\Common\Exception\InvalidCreditCardException
+     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     */
     public function getData()
     {
         $this->validate('amount');
@@ -21,7 +27,7 @@ class PurchaseRequest extends AbstractRequest
         $data = [];
 
         $data['sale'] = array(
-            'amount' => (float)$this->getAmount(),
+            'amount' => (float) $this->getAmount(),
             'currency' => $this->getCurrency(),
             'description' => $this->getDescription(),
         );
@@ -41,10 +47,9 @@ class PurchaseRequest extends AbstractRequest
             'country_code' => $this->getCountryCode(),
         );
 
-
         if ($card_data) {
             $card = array(
-                'card_number' => (string)$card_data->getNumber(),
+                'card_number' => (string) $card_data->getNumber(),
                 'expiration_month' => $card_data->getExpiryMonth(),
                 'expiration_year' => $card_data->getExpiryYear(),
                 'name_on_card' => $card_data->getFirstName(),
@@ -73,7 +78,7 @@ class PurchaseRequest extends AbstractRequest
                 if ($value != '') {
 
                     if ($key == 'expiration_month' && $value < 10) {
-                        $value = '0' . (int)$value;
+                        $value = '0' . (int) $value;
                     }
 
                     $data['card'][$key] = $value;
@@ -86,10 +91,13 @@ class PurchaseRequest extends AbstractRequest
         return $data;
     }
 
-    protected function getEndpoint() {
+    /**
+     * @return string
+     */
+    protected function getEndpoint()
+    {
 
         $this->setRequestMethod('POST');
-
-        return $this->getEndpointUrl().'/3DSecure/checkCard';
+        return $this->getEndpointUrl() . '/3DSecure/checkCard';
     }
 }

@@ -5,13 +5,16 @@ use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 
 /**
- * Paylane Authorize/Purchase Request
- *
- * This is the request that will be called for any transaction which submits a credit card,
- * including `authorize` and `purchase`
+ * Class CreditCardRequest
+ * @package Omnipay\Paylane\Message
  */
 class CreditCardRequest extends AbstractRequest
 {
+    /**
+     * @return array|mixed
+     * @throws \Omnipay\Common\Exception\InvalidCreditCardException
+     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     */
     public function getData()
     {
         $this->validate('amount', 'card');
@@ -21,6 +24,10 @@ class CreditCardRequest extends AbstractRequest
         return array('amount' => $this->getAmount());
     }
 
+    /**
+     * @param mixed $data
+     * @return ResponseInterface|Response
+     */
     public function sendData($data)
     {
         $data['reference'] = uniqid();

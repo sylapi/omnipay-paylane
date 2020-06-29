@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Paylane Response.
- */
 namespace Omnipay\Paylane\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
@@ -10,18 +7,13 @@ use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
 
 /**
- * Stripe Response.
- *
- * This is the response class for all Stripe requests.
- *
- * @see \Omnipay\Paylane\Gateway
+ * Class Response
+ * @package Omnipay\Paylane\Message
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
     /**
-     * Request id
-     *
-     * @var string URL
+     * @var null
      */
     protected $requestId = null;
 
@@ -30,6 +22,12 @@ class Response extends AbstractResponse implements RedirectResponseInterface
      */
     protected $headers = [];
 
+    /**
+     * Response constructor.
+     * @param RequestInterface $request
+     * @param $data
+     * @param array $headers
+     */
     public function __construct(RequestInterface $request, $data, $headers = [])
     {
         $this->request = $request;
@@ -38,8 +36,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     }
 
     /**
-     * Is the transaction successful?
-     *
      * @return bool
      */
     public function isSuccessful()
@@ -51,6 +47,9 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return false;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getResponse()
     {
         if ($this->isSuccessful()) {
@@ -60,24 +59,39 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMessage()
     {
-        if (!$this->isSuccessful() && isset($this->data['error']) && isset($this->data['error']['error_description'])) {
-            return $this->data['error']['error_description'];
+        if (!$this->isSuccessful()) {
+
+            if (isset($this->data['error']) && isset($this->data['error']['error_description'])) {
+                return $this->data['error']['error_description'];
+            }
+            else if ($this->request->statusCode == 401) {
+                return 'Login error';
+            }
         }
 
         return null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCode()
     {
-        if (!$this->isSuccessful() && isset($this->data['error']) && isset($this->data['error']['error_number'])) {
+        if (isset($this->data['error']) && isset($this->data['error']['error_number'])) {
             return $this->data['error']['error_number'];
         }
 
-        return null;
+        return $this->request->statusCode;
     }
 
+    /**
+     * @return bool
+     */
     public function isRedirect()
     {
         if (isset($this->data['redirect_url'])) {
@@ -87,6 +101,9 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return false;
     }
 
+    /**
+     * @return bool|void
+     */
     public function redirect()
     {
         if (isset($this->data['redirect_url'])) {
@@ -96,6 +113,9 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return false;
     }
 
+    /**
+     * @return string|null
+     */
     public function getRedirectUrl()
     {
         if (isset($this->data['redirect_url']) && !empty($this->data['redirect_url'])) {
@@ -105,6 +125,9 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTransactionReference()
     {
         if (isset($this->data['id_3dsecure_auth'])) {
@@ -117,16 +140,19 @@ class Response extends AbstractResponse implements RedirectResponseInterface
         return null;
     }
 
-
+    /**
+     * @return string
+     */
     public function getRedirectMethod()
     {
         return 'GET';
     }
 
-
+    /**
+     * @return array|null
+     */
     public function getRedirectData()
     {
         return null;
     }
-
 }

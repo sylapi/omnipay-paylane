@@ -3,10 +3,14 @@
 namespace Omnipay\Paylane\Message;
 
 /**
- * Paylane Purchase Request.
+ * Class SaleBySecureAuthorizationRequest
+ * @package Omnipay\Paylane\Message
  */
 class SaleBySecureAuthorizationRequest extends AbstractRequest
 {
+    /**
+     * @return array|mixed
+     */
     public function getData()
     {
         $data = [];
@@ -14,6 +18,9 @@ class SaleBySecureAuthorizationRequest extends AbstractRequest
         return $data;
     }
 
+    /**
+     * @return string
+     */
     protected function getEndpoint() {
 
         $this->setRequestMethod('POST');
