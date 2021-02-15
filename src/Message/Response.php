@@ -7,8 +7,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
 
 /**
- * Class Response
- * @package Omnipay\Paylane\Message
+ * Class Response.
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
@@ -24,6 +23,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     /**
      * Response constructor.
+     *
      * @param RequestInterface $request
      * @param $data
      * @param array $headers
@@ -65,11 +65,9 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     public function getMessage()
     {
         if (!$this->isSuccessful()) {
-
             if (isset($this->data['error']) && isset($this->data['error']['error_description'])) {
                 return $this->data['error']['error_description'];
-            }
-            else if ($this->request->statusCode == 401) {
+            } elseif ($this->request->statusCode == 401) {
                 return 'Login error';
             }
         }
@@ -132,8 +130,7 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     {
         if (isset($this->data['id_3dsecure_auth'])) {
             return $this->data['id_3dsecure_auth'];
-        }
-        else if (isset($this->data['id_sale'])) {
+        } elseif (isset($this->data['id_sale'])) {
             return $this->data['id_sale'];
         }
 
