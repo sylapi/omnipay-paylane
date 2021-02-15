@@ -3,15 +3,15 @@
 namespace Omnipay\Paylane\Message;
 
 /**
- * Class PurchaseRequest
- * @package Omnipay\Paylane\Message
+ * Class PurchaseRequest.
  */
 class PurchaseRequest extends AbstractRequest
 {
     /**
-     * @return array|mixed
      * @throws \Omnipay\Common\Exception\InvalidCreditCardException
      * @throws \Omnipay\Common\Exception\InvalidRequestException
+     *
+     * @return array|mixed
      */
     public function getData()
     {
@@ -26,35 +26,35 @@ class PurchaseRequest extends AbstractRequest
 
         $data = [];
 
-        $data['sale'] = array(
-            'amount' => (float) $this->getAmount(),
-            'currency' => $this->getCurrency(),
+        $data['sale'] = [
+            'amount'      => (float) $this->getAmount(),
+            'currency'    => $this->getCurrency(),
             'description' => $this->getDescription(),
-        );
+        ];
 
         if ($card_data) {
-            $customer = array(
-                'name' => $this->getName(),
+            $customer = [
+                'name'  => $this->getName(),
                 'email' => $card_data->getEmail(),
-                'ip' => $this->getIp()
-            );
+                'ip'    => $this->getIp(),
+            ];
         }
 
-        $address = array(
+        $address = [
             'street_house' => $this->getStreetHouse(),
-            'city' => $this->getCity(),
-            'zip' => $this->getZip(),
+            'city'         => $this->getCity(),
+            'zip'          => $this->getZip(),
             'country_code' => $this->getCountryCode(),
-        );
+        ];
 
         if ($card_data) {
-            $card = array(
-                'card_number' => (string) $card_data->getNumber(),
+            $card = [
+                'card_number'      => (string) $card_data->getNumber(),
                 'expiration_month' => $card_data->getExpiryMonth(),
-                'expiration_year' => $card_data->getExpiryYear(),
-                'name_on_card' => $card_data->getFirstName(),
-                'card_code' => $card_data->getCvv()
-            );
+                'expiration_year'  => $card_data->getExpiryYear(),
+                'name_on_card'     => $card_data->getFirstName(),
+                'card_code'        => $card_data->getCvv(),
+            ];
         }
 
         if (!empty($customer)) {
@@ -76,9 +76,8 @@ class PurchaseRequest extends AbstractRequest
         if (!empty($card)) {
             foreach ($card as $key => $value) {
                 if ($value != '') {
-
                     if ($key == 'expiration_month' && $value < 10) {
-                        $value = '0' . (int) $value;
+                        $value = '0'.(int) $value;
                     }
 
                     $data['card'][$key] = $value;
@@ -96,8 +95,8 @@ class PurchaseRequest extends AbstractRequest
      */
     protected function getEndpoint()
     {
-
         $this->setRequestMethod('POST');
-        return $this->getEndpointUrl() . '/3DSecure/checkCard';
+
+        return $this->getEndpointUrl().'/3DSecure/checkCard';
     }
 }

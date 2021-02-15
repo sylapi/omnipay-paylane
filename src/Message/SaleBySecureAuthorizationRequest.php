@@ -3,8 +3,7 @@
 namespace Omnipay\Paylane\Message;
 
 /**
- * Class SaleBySecureAuthorizationRequest
- * @package Omnipay\Paylane\Message
+ * Class SaleBySecureAuthorizationRequest.
  */
 class SaleBySecureAuthorizationRequest extends AbstractRequest
 {
@@ -15,14 +14,15 @@ class SaleBySecureAuthorizationRequest extends AbstractRequest
     {
         $data = [];
         $data['id_3dsecure_auth'] = $this->getIdSecureAuth();
+
         return $data;
     }
 
     /**
      * @return string
      */
-    protected function getEndpoint() {
-
+    protected function getEndpoint()
+    {
         $this->setRequestMethod('POST');
 
         return $this->getEndpointUrl().'/3DSecure/authSale';

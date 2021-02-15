@@ -2,12 +2,11 @@
 
 namespace Omnipay\Paylane;
 
-use Omnipay\Tests\GatewayTestCase;
 use Omnipay\Common\CreditCard;
+use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
 {
-
     protected $gateway;
     public $options;
 
@@ -17,34 +16,34 @@ class GatewayTest extends GatewayTestCase
 
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
 
-        $this->options = array(
+        $this->options = [
             'amount' => '10.00',
-            'card' => new CreditCard(array(
-                'firstName' => 'Example',
-                'lastName' => 'User',
-                'number' => '4111111111111111',
+            'card'   => new CreditCard([
+                'firstName'   => 'Example',
+                'lastName'    => 'User',
+                'number'      => '4111111111111111',
                 'expiryMonth' => '12',
-                'expiryYear' => date('Y'),
-                'cvv' => '123',
-            )),
-        );
+                'expiryYear'  => date('Y'),
+                'cvv'         => '123',
+            ]),
+        ];
     }
 
     public function testAuthorize()
     {
-        $options = array(
+        $options = [
             'card' => [
-                'number' => '12345678900'
+                'number' => '12345678900',
             ],
-        );
+        ];
         $request = $this->gateway->authorize($options);
 
         $this->assertInstanceOf('\Omnipay\Paylane\Message\CardCheckRequest', $request);
         $this->assertSame('12345678900', $request->getCard()->getNumber());
     }
 
-    public function authorizeSuccess() {
-
+    public function authorizeSuccess()
+    {
         $this->setMockHttpResponse('AuthorizeSuccess.txt');
 
         $response = $this->gateway->authorize($this->options)->send();
@@ -55,8 +54,8 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame('VISA', $response->getData()['card_type']);
     }
 
-    public function authorizeFailure() {
-
+    public function authorizeFailure()
+    {
         $this->setMockHttpResponse('AutorizeFailure.txt');
 
         $response = $this->gateway->authorize($this->options)->send();
@@ -78,7 +77,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertNull($response->getMessage());
     }
 
-
     public function testPurchaseFailure()
     {
         $this->setMockHttpResponse('PurchaseFailure.txt');
@@ -88,7 +86,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertNotNull($response->getMessage());
     }
-
 
     public function testCompletePurchaseSuccess()
     {
@@ -102,7 +99,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertSame('123456789', $response->getTransactionReference());
     }
 
-
     public function testCompletePurchaseFailure()
     {
         $this->setMockHttpResponse('CompletePurchaseFailure.txt');
@@ -113,7 +109,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertNotNull($response->getMessage());
         $this->assertSame('723', $response->getCode());
     }
-
 
     public function testAuthorizeParameters()
     {
@@ -140,6 +135,7 @@ class GatewayTest extends GatewayTestCase
             $this->assertSame($value, $request->$getter());
         }
     }
+
     public function testCompletePurchaseParameters()
     {
         if ($this->gateway->supportsCompletePurchase()) {
@@ -163,7 +159,7 @@ class GatewayTest extends GatewayTestCase
         } else {
             $value = uniqid();
         }
+
         return $value;
     }
-
 }

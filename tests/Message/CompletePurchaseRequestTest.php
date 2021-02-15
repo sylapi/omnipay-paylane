@@ -14,13 +14,13 @@ class CompletePurchaseRequestTest extends TestCase
     public function setUp()
     {
         $this->request = new CompletePurchaseRequest($this->getHttpClient(), $this->getHttpRequest());
-        $this->request->initialize(array(
+        $this->request->initialize([
             'apiKey' => 'mykey',
-        ));
+        ]);
 
-        $this->getHttpRequest()->request->replace(array(
+        $this->getHttpRequest()->request->replace([
             'id' => 'tr_Qzin4iTWrU',
-        ));
+        ]);
     }
 
     /**
@@ -40,7 +40,7 @@ class CompletePurchaseRequestTest extends TestCase
     {
         $data = $this->request->getData();
 
-        $this->assertSame("tr_Qzin4iTWrU", $data['id']);
+        $this->assertSame('tr_Qzin4iTWrU', $data['id']);
         $this->assertCount(1, $data);
     }
 
@@ -79,6 +79,6 @@ class CompletePurchaseRequestTest extends TestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getTransactionReference());
-        $this->assertSame("The issuer is invalid", $response->getMessage());
+        $this->assertSame('The issuer is invalid', $response->getMessage());
     }
 }

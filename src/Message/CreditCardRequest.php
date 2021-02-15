@@ -1,19 +1,20 @@
 <?php
+
 namespace Omnipay\Paylane\Message;
 
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 
 /**
- * Class CreditCardRequest
- * @package Omnipay\Paylane\Message
+ * Class CreditCardRequest.
  */
 class CreditCardRequest extends AbstractRequest
 {
     /**
-     * @return array|mixed
      * @throws \Omnipay\Common\Exception\InvalidCreditCardException
      * @throws \Omnipay\Common\Exception\InvalidRequestException
+     *
+     * @return array|mixed
      */
     public function getData()
     {
@@ -21,11 +22,12 @@ class CreditCardRequest extends AbstractRequest
 
         $this->getCard()->validate();
 
-        return array('amount' => $this->getAmount());
+        return ['amount' => $this->getAmount()];
     }
 
     /**
      * @param mixed $data
+     *
      * @return ResponseInterface|Response
      */
     public function sendData($data)

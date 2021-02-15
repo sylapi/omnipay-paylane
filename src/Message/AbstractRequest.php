@@ -3,8 +3,7 @@
 namespace Omnipay\Paylane\Message;
 
 /**
- * Class AbstractRequest
- * @package Omnipay\Paylane\Message
+ * Class AbstractRequest.
  */
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
@@ -32,6 +31,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setIp($value)
@@ -49,6 +49,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setApiKey($value)
@@ -66,6 +67,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setApiPassword($value)
@@ -83,6 +85,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setVerificationCode($value)
@@ -100,6 +103,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setLanguage($value)
@@ -117,6 +121,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setId3DSecureAuth($value)
@@ -134,6 +139,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param string|null $value
+     *
      * @return \Omnipay\Common\Message\AbstractRequest|AbstractRequest
      */
     public function setAmount($value)
@@ -151,6 +157,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return \Omnipay\Common\Message\AbstractRequest|AbstractRequest
      */
     public function setCurrency($value)
@@ -168,6 +175,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return \Omnipay\Common\Message\AbstractRequest|AbstractRequest
      */
     public function setDescription($value)
@@ -185,6 +193,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setName($value)
@@ -202,6 +211,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setEmail($value)
@@ -219,6 +229,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setStreetHouse($value)
@@ -236,6 +247,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setCity($value)
@@ -253,6 +265,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setZip($value)
@@ -270,6 +283,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setCountryCode($value)
@@ -287,6 +301,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setIdSecureAuth($value)
@@ -304,6 +319,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setIdSale($value)
@@ -321,6 +337,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return \Omnipay\Common\Message\AbstractRequest|AbstractRequest
      */
     public function setReturnUrl($value)
@@ -330,6 +347,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return \Omnipay\Common\Message\AbstractRequest|AbstractRequest
      */
     public function setTransactionId($value)
@@ -351,11 +369,13 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function getRequestMethod()
     {
         $method = $this->getParameter('request_method');
+
         return ($method) ? $method : 'POST';
     }
 
     /**
      * @param $value
+     *
      * @return AbstractRequest
      */
     public function setRequestMethod($value)
@@ -363,11 +383,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('request_method', $value);
     }
 
-    /**
-     *
-     */
     public function getAction()
-    { }
+    {
+    }
 
     /**
      * @return mixed|\Omnipay\Common\CreditCard
@@ -382,29 +400,29 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      */
     public function getHeaders()
     {
-        $headers = array(
-            'Content-type' => 'application/json'
-        );
+        $headers = [
+            'Content-type' => 'application/json',
+        ];
 
         return $headers;
     }
 
     /**
      * @param mixed $data
+     *
      * @return \Omnipay\Common\Message\ResponseInterface|Response
      */
     public function sendData($data)
     {
         $headers = array_merge(
             $this->getHeaders(),
-            array('Authorization' => 'Basic ' . base64_encode($this->getApiKey() . ':' . $this->getApiPassword()))
+            ['Authorization' => 'Basic '.base64_encode($this->getApiKey().':'.$this->getApiPassword())]
         );
 
         $httpResponse = $this->httpClient->request($this->getRequestMethod(), $this->getEndpoint(), $headers, json_encode($data));
         $responseBody = json_decode($httpResponse->getBody()->getContents(), true);
 
         if (isset($responseBody['error']['error_number']) && $responseBody['error']['error_number'] == 720) {
-
             $httpResponse = $this->httpClient->request($this->getRequestMethod(), $this->getEndpointUrl().'/cards/sale', $headers, json_encode($data));
             $responseBody = json_decode($httpResponse->getBody()->getContents(), true);
         }
@@ -416,10 +434,10 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->createResponse($responseBody, $httpResponse->getHeaders());
     }
 
-
     /**
      * @param $data
      * @param array $headers
+     *
      * @return Response
      */
     protected function createResponse($data, $headers = [])
@@ -433,7 +451,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         return $this->response = new Response($this, $data, $headers);
     }
-
 
     /**
      * @return string

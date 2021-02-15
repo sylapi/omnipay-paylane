@@ -1,27 +1,27 @@
 <?php
+
 namespace Omnipay\Paylane\Message;
 
 /**
- * Class CardCheckRequest
- * @package Omnipay\Paylane\Message
+ * Class CardCheckRequest.
  */
 class CardCheckRequest extends AbstractRequest
 {
-
     /**
      * @return mixed
      */
     public function getData()
     {
         $data['card_number'] = $this->getCard()->getNumber();
+
         return $data;
     }
 
     /**
      * @return string
      */
-    protected function getEndpoint() {
-
+    protected function getEndpoint()
+    {
         $this->setRequestMethod('GET');
 
         return $this->getEndpointUrl().'/cards/check';

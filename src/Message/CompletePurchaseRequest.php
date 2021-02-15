@@ -3,8 +3,7 @@
 namespace Omnipay\Paylane\Message;
 
 /**
- * Class CompletePurchaseRequest
- * @package Omnipay\Paylane\Message
+ * Class CompletePurchaseRequest.
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {
@@ -19,7 +18,7 @@ class CompletePurchaseRequest extends PurchaseRequest
     public function getData()
     {
         $this->data = [
-            'id_3dsecure_auth' => $this->httpRequest->request->get('id_3dsecure_auth')
+            'id_3dsecure_auth' => $this->httpRequest->request->get('id_3dsecure_auth'),
         ];
 
         return $this->data;
@@ -28,8 +27,8 @@ class CompletePurchaseRequest extends PurchaseRequest
     /**
      * @return bool
      */
-    public function isSuccessful() {
-
+    public function isSuccessful()
+    {
         if ($this->httpRequest->request->get('status') == 'SUCCESS') {
             return true;
         }
@@ -40,12 +39,11 @@ class CompletePurchaseRequest extends PurchaseRequest
     /**
      * @return mixed
      */
-    public function getMessage() {
-
+    public function getMessage()
+    {
         if (!$this->isSuccessful()) {
             return $this->httpRequest->request->get('error_text');
-        }
-        else {
+        } else {
             return $this->httpRequest->request->get('description');
         }
     }
@@ -53,10 +51,9 @@ class CompletePurchaseRequest extends PurchaseRequest
     /**
      * @return int|mixed
      */
-    public function getCode() {
-
+    public function getCode()
+    {
         if (!$this->isSuccessful()) {
-
             $code = $this->httpRequest->request->get('error_code');
             if ($code) {
                 return $code;
@@ -71,8 +68,8 @@ class CompletePurchaseRequest extends PurchaseRequest
     /**
      * @return string
      */
-    protected function getEndpoint() {
-
+    protected function getEndpoint()
+    {
         $this->setRequestMethod('POST');
 
         return $this->getEndpointUrl().'/3DSecure/authSale';
